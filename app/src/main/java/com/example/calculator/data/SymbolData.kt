@@ -1,6 +1,5 @@
 package com.example.calculator.data
 
-import androidx.compose.material.icons.Icons
 import com.example.calculator.R
 
 enum class SymbolListData(val charList: List<Char>) {

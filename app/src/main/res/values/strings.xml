@@ -1,22 +1,32 @@
 <resources>
     <string name="app_name">Calculator</string>
     <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ac">AC</string>
+    <string name="C">C</string>
     <string name="procent">%</string>
     <string name="division">/</string>
     <string name="multiply">X</string>
-    <string name="seven">7</string>
-    <string name="eight">8</string>
-    <string name="nine">9</string>
-    <string name="four">4</string>
-    <string name="five">5</string>
-    <string name="six">6</string>
-    <string name="qqqq">QQQQ</string>
+
+
+
+
+    <!-- numbers -->
     <string name="zero">0</string>
-    <string name="dot">.</string>
-    <string name="q">q</string>
     <string name="one">1</string>
     <string name="two">2</string>
     <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="six">6</string>
+    <string name="seven">7</string>
+    <string name="eight">8</string>
+    <string name="nine">9</string>
+
+    <string name="q">q</string>
+    <string name="dot">.</string>
+    <string name="qqqq">QQQQ</string>
+
+    <string name="title_activity_main">MainActivity</string>
 </resources>

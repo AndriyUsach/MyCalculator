@@ -1,6 +1,6 @@
 package com.example.calculator.`interface`
 
-interface ExpressionBuilderInterface {
+interface ExpressionBuilder {
     fun append(ch: Char)
     fun delete()
     fun clear()

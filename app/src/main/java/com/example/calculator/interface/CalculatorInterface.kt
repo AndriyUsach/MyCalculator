@@ -1,5 +1,5 @@
 package com.example.calculator.`interface`
 
-interface CalculatorInterface {
+interface Calculator {
     fun calculate(expression: String): Double
 }

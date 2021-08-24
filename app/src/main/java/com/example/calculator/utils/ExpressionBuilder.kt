@@ -1,9 +1,9 @@
 package com.example.calculator.utils
 
-import com.example.calculator.`interface`.ExpressionBuilderInterface
+import com.example.calculator.`interface`.ExpressionBuilder
 import com.example.calculator.data.SymbolListData
 
-class ExpressionBuilder : ExpressionBuilderInterface {
+class ExpressionBuilderImpl : ExpressionBuilder {
 
     private val expression = StringBuilder("0") // main expression for calculating
 

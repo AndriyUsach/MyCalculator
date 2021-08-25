@@ -17,11 +17,10 @@ class BasicCalculatorViewModel : ViewModel() {
 
     private val calculator = CalculatorImpl()
     private var result: Double = 0.0
+    private var equalButtonFlag = false
 
     var textCalculatorFieldSettings = TextCalculatorFieldSettings()
         private set
-
-    private var equalButtonFlag = false
 
 
     fun addChar(ch: Char) {

@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.calculator.R
 import com.example.calculator.Screen.ui.theme.CalculatorTheme
+import com.example.calculator.data.SymbolData
 import com.example.calculator.fragments.TextCalculatorFieldSettings
 
 
@@ -23,6 +24,10 @@ fun BasicCalculatorScreen(
     expression: String,
     result: String,
     textCalculatorFieldSettings: TextCalculatorFieldSettings,
+    numberPainterResourceId: List<Int>,
+    operatorPainterResourceId: List<Int>,
+    operatorCharList: List<Char>,
+    numberCharList: List<Char>,
     ButtonPressed: (Char) -> Unit,
     deleteButtonPressed: () -> Unit,
     clearButtonPressed: () -> Unit,
@@ -46,6 +51,10 @@ fun BasicCalculatorScreen(
                 )
 
                 CalculatorButtonGrid(
+                    numberPainterResourceId = numberPainterResourceId,
+                    numberCharList = numberCharList,
+                    operatorPainterResourceId = operatorPainterResourceId,
+                    operatorCharList = operatorCharList,
                     buttonPressed = ButtonPressed,
                     equalButtonPressed = equalButtonPressed,
                     deleteButtonPressed = deleteButtonPressed,
@@ -71,7 +80,11 @@ fun BasicCalculatorScreenPreview() {
             ButtonPressed = {},
             expression = "1+1",
             result = "2",
-            textCalculatorFieldSettings = TextCalculatorFieldSettings()
+            textCalculatorFieldSettings = TextCalculatorFieldSettings(),
+            numberCharList = SymbolData.SymbolCharData.numberSymbolList,
+            numberPainterResourceId = SymbolData.SymbolDrawableIdData.numberPainterResourceIdData,
+            operatorPainterResourceId = SymbolData.SymbolDrawableIdData.operatorPainterResourceIdData,
+            operatorCharList = SymbolData.SymbolCharData.operatorSymbolList
         )
     }
 }
@@ -108,33 +121,16 @@ fun BasicTextCalculatorField(
 
 @Composable
 fun CalculatorButtonGrid(
+    numberPainterResourceId: List<Int>,
+    numberCharList: List<Char>,
+    operatorPainterResourceId: List<Int>,
+    operatorCharList: List<Char>,
     buttonPressed: (Char) -> Unit,
     deleteButtonPressed: () -> Unit,
     clearButtonPressed: () -> Unit,
     equalButtonPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    val numberPainterResourceId = listOf(
-        R.drawable.seven, R.drawable.eight, R.drawable.nine, 
-        R.drawable.four, R.drawable.five, R.drawable.six,
-        R.drawable.one, R.drawable.two, R.drawable.three,
-        R.drawable.ic_launcher_foreground, R.drawable.zero, R.drawable.dot
-    )
-
-    val numberCharList = listOf(
-        '7', '8', '9', '4', '5', '6', '1', '2', '3', ' ', '0', '.'
-    )
-    
-    val operatorPainterResourceId = listOf(
-        R.drawable.multiply, R.drawable.minus, R.drawable.plus, R.drawable.equal
-    )
-
-    val operatorCharList = listOf(
-        '*', '-', '+', '='
-    )
-    
-    
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -159,22 +155,18 @@ fun CalculatorButtonGrid(
                 Icon(painter = painterResource(id = R.drawable.ic_twotone_arrow), contentDescription = null)
             }
 
-            Spacer(modifier = Modifier.width(20.dp))
+            for (i in 0..1) {
+                Spacer(modifier = Modifier.width(20.dp))
 
-            IconButton(
-                onClick = { buttonPressed('%') },
-                modifier = modifier
-            ) {
-                Icon(painter = painterResource(id = R.drawable.percentage), contentDescription = null)
-            }
-
-            Spacer(modifier = Modifier.width(20.dp))
-
-            IconButton(
-                onClick = { buttonPressed('/') },
-                modifier = modifier
-            ) {
-                Icon(painter = painterResource(id = R.drawable.divide), contentDescription = null)
+                IconButton(
+                    onClick = { buttonPressed(operatorCharList[i]) },
+                    modifier = modifier
+                ) {
+                    Icon(
+                        painter = painterResource(id = operatorPainterResourceId[i]),
+                        contentDescription = null
+                    )
+                }
             }
         }
 
@@ -192,8 +184,10 @@ fun CalculatorButtonGrid(
             
             Column {
                 OperatorGrid(
-                    operatorPainterResourceId = operatorPainterResourceId,
-                    operatorCharList = operatorCharList,
+                    operatorPainterResourceId = operatorPainterResourceId
+                        .subList(2, operatorPainterResourceId.size),
+                    operatorCharList = operatorCharList
+                        .subList(2, operatorCharList.size),
                     buttonPressed = buttonPressed,
                     equalButtonPressed = equalButtonPressed,
                     modifier = modifier
@@ -241,7 +235,7 @@ fun NumberGrid(
                 modifier = modifier
             ) {
                 Icon(
-                    painter = painterResource(id = numberPainterResourceId[9]),
+                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
                     contentDescription = null
                 )
             }
@@ -250,7 +244,7 @@ fun NumberGrid(
 
 
             for (buttonX in 0..1) {
-                val indexId = 10
+                val indexId = 9
                 IconButton(
                     onClick = { buttonPressed(numberCharList[indexId + buttonX]) },
                     modifier = modifier
@@ -290,7 +284,7 @@ fun OperatorGrid(
         }
         //equal button
         IconButton(
-            onClick = equalButtonPressed,
+                onClick = equalButtonPressed,
             modifier = modifier
         ) {
             Icon(
@@ -301,23 +295,3 @@ fun OperatorGrid(
         Spacer(modifier = Modifier.height(20.dp))
     }
 }
-
-/*
-@Preview("Button Grid")
-@Composable
-fun CalculatorButtonGridPreview() {
-    CalculatorTheme {
-        Surface(color = Color.White) {
-            CalculatorButtonGrid(
-                buttonPressed = {},
-                equalButtonPressed = {},
-                deleteButtonPressed = {},
-                clearButtonPressed = {},
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colors.secondary)
-                    .size(75.dp)
-            )
-        }
-    }
-}*/

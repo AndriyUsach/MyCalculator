@@ -1,6 +1,5 @@
 package com.example.calculator.fragments
 
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +11,7 @@ import com.example.calculator.utils.ExpressionBuilderImpl
 class BasicCalculatorViewModel : ViewModel() {
 
     private val expressionBuilder = ExpressionBuilderImpl()
-    private val _expressionViewModel = MutableLiveData<String>("0")
+    private val _expressionViewModel = MutableLiveData("0")
     val expressionViewModel: LiveData<String>
         get() = _expressionViewModel
 
@@ -22,13 +21,29 @@ class BasicCalculatorViewModel : ViewModel() {
     var textCalculatorFieldSettings = TextCalculatorFieldSettings()
         private set
 
+    private var equalButtonFlag = false
+
+
     fun addChar(ch: Char) {
-        expressionBuilder.append(ch)
-        _expressionViewModel.value = expressionBuilder.getExpression()
+        if (equalButtonFlag) {
+            expressionBuilder.setExpression(result.toString())
+            equalButtonFlag = false
+        }
+
         textCalculatorFieldSettings.expressionSettings()
+        expressionBuilder.append(ch)
+        if (ch == '%') {
+            _expressionViewModel.value =
+                calculator.calculate(expressionBuilder.getExpression()).toString()
+            expressionBuilder.setExpression(calculateExpression().toString())
+            return
+        }
+        _expressionViewModel.value = expressionBuilder.getExpression()
     }
 
     fun deleteChar() {
+        if (equalButtonFlag)
+            return
         expressionBuilder.delete()
         _expressionViewModel.value = expressionBuilder.getExpression()
         textCalculatorFieldSettings.expressionSettings()
@@ -44,9 +59,14 @@ class BasicCalculatorViewModel : ViewModel() {
         textCalculatorFieldSettings.defaultSettings()
     }
 
+    private fun calculateExpression(): Double {
+        if (expressionBuilder.isReadyForCalculation())
+            result = calculator.calculate(_expressionViewModel.value!!)
+        return result
+    }
+
     fun getResult(): String {
-        result = calculator.calculate(_expressionViewModel.value!!)
-        return "=$result"
+        return "=${calculateExpression()}"
     }
 
     fun equalExpression() {
@@ -54,9 +74,10 @@ class BasicCalculatorViewModel : ViewModel() {
         _expressionViewModel.value = expressionBuilder.getExpression()
         expressionBuilder.delete()
         val value = expressionBuilder.getExpression()
-        expressionBuilder.setExpression(result.toString())
+        //expressionBuilder.setExpression(result.toString())
         _expressionViewModel.value = value
         textCalculatorFieldSettings.resultSettings()
+        equalButtonFlag = true
     }
 
 }

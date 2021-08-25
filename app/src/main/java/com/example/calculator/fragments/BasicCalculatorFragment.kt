@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.calculator.Screen.BasicCalculatorScreen
 import com.example.calculator.Screen.ui.theme.CalculatorTheme
+import com.example.calculator.data.SymbolData
 
 class BasicCalculatorFragment: Fragment() {
 
@@ -28,6 +29,12 @@ class BasicCalculatorFragment: Fragment() {
                             expression = expression,
                             result = viewModel.getResult(),
                             textCalculatorFieldSettings = viewModel.textCalculatorFieldSettings,
+                            numberPainterResourceId = SymbolData.SymbolDrawableIdData
+                                .numberPainterResourceIdData,
+                            numberCharList = SymbolData.SymbolCharData.numberSymbolList,
+                            operatorPainterResourceId = SymbolData.SymbolDrawableIdData
+                                .operatorPainterResourceIdData,
+                            operatorCharList = SymbolData.SymbolCharData.operatorSymbolList,
                             ButtonPressed = { ch -> viewModel.addChar(ch) },
                             deleteButtonPressed = { viewModel.deleteChar() },
                             clearButtonPressed = { viewModel.clearExpression() },

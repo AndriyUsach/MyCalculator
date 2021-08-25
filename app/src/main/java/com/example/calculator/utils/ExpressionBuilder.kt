@@ -1,7 +1,7 @@
 package com.example.calculator.utils
 
 import com.example.calculator.`interface`.ExpressionBuilder
-import com.example.calculator.data.SymbolListData
+import com.example.calculator.data.SymbolData
 
 class ExpressionBuilderImpl : ExpressionBuilder {
 
@@ -12,8 +12,8 @@ class ExpressionBuilderImpl : ExpressionBuilder {
         when (ch) {
             '0' -> addZeroSymbol()
             '.' -> addDotSymbol()
-            in SymbolListData.OPERATIONS.charList -> addOperationSymbol(ch)
-            in SymbolListData.NUMBERS.charList -> addNumber(ch)
+            in SymbolData.SymbolCharData.operatorSymbolList -> addOperationSymbol(ch)
+            in SymbolData.SymbolCharData.numbersList -> addNumber(ch)
             else -> return
         }
     }
@@ -108,7 +108,7 @@ class ExpressionBuilderImpl : ExpressionBuilder {
 
     private fun isOperationSymbol(index: Int): Boolean {
         if (this.isEmpty()) return false
-        return expression[index] in SymbolListData.OPERATIONS.charList
+        return expression[index] in SymbolData.SymbolCharData.operatorSymbolList
     }
 
     private fun getNumberList(): List<String> {
